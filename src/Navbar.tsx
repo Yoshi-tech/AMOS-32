@@ -1,10 +1,15 @@
 import React, { useState } from "react";
 import "./Navbar.css"; // Ensure this file is linked
 
-const Navbar = ({ setActivePage }) => {
+// ✅ Define prop types
+interface NavbarProps {
+  setActivePage: React.Dispatch<React.SetStateAction<string>>;
+}
+
+const Navbar: React.FC<NavbarProps> = ({ setActivePage }) => {
   const [menuOpen, setMenuOpen] = useState(false);
 
-  const handleNavClick = (page) => {
+  const handleNavClick = (page: string) => {
     setActivePage(page);
     setMenuOpen(false); // Close menu after clicking
   };
