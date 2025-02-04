@@ -11,7 +11,8 @@ function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isLandingPage, setIsLandingPage] = useState(true);
   const [activePage, setActivePage] = useState("information");
-  const [selectedModel, setSelectedModel] = useState(null);
+  const [selectedModel, setSelectedModel] = useState<string | null>(null);
+
 
   useEffect(() => {
     const timer = setTimeout(() => setIsLandingPage(false), 3000);
