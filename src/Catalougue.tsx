@@ -2,7 +2,13 @@ import React from "react";
 import MiniVisualizer from "./MiniVisualizer"; // ✅ Import Mini Visualizer
 import "./Catalogue.css";
 
-const Catalogue = ({ setActivePage, setSelectedModel }) => {
+interface CatalogueProps {
+  setActivePage: React.Dispatch<React.SetStateAction<string>>;
+  setSelectedModel: React.Dispatch<React.SetStateAction<number | null>>;
+}
+
+const Catalogue: React.FC<CatalogueProps> = ({ setActivePage, setSelectedModel }) => {
+
   const items = [
     {
       id: 1,
