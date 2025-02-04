@@ -7,12 +7,11 @@ const AboutPage = () => {
     details: "",
   });
 
-const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  setFormData({ ...formData, [e.target.name]: e.target.value });
-};
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
 
-
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     alert("Quote request submitted! We’ll get back to you soon.");
     setFormData({ name: "", email: "", details: "" });
@@ -24,19 +23,14 @@ const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       <p style={paragraphStyle}>
         Meet AMOS—the Adaptable Modular Organization System, where storage meets
         intelligence. Our customizable, modular storage solutions eliminate
-        clutter, maximize space, and evolve with your needs. With AMOS, you
-        don’t just organize—you optimize. You don’t just store—you innovate. And
-        most importantly, you’re shaping a smarter, more sustainable future.
-        Navigate to the visualizer to visualize your custom Model Today! Or
-        check out the catalogue to see soem of our curated pre designed models!
-        Fill out the quote form to request a consultation once you're done!
+        clutter, maximize space, and evolve with your needs.
       </p>
 
       {/* Quote Request Form */}
       <div style={formContainerStyle}>
         <h2 style={formHeaderStyle}>Request a Quote</h2>
         <p style={formDescriptionStyle}>
-          Interested in a custom AMOS solution? Fill out the form below and
+          Interested in a custom AMOS solution? Try out the visualizer and fill out the form below and
           we'll get back to you with a personalized quote.
         </p>
 
@@ -65,17 +59,14 @@ const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
             value={formData.details}
             onChange={handleChange}
             required
-            rows="4"
+            rows={4}  // ✅ Corrected
             style={{ ...inputStyle, resize: "none" }}
           ></textarea>
           <button
             type="submit"
             style={buttonStyle}
-              onMouseOver={(e) => ((e.target as HTMLElement).style.backgroundColor = "#4e7f4c")}
-              onMouseOut={(e) => ((e.target as HTMLElement).style.backgroundColor = "#64c261")}
-
-
-
+            onMouseOver={(e) => (e.currentTarget.style.backgroundColor = "#4e7f4c")} // ✅ Fixed
+            onMouseOut={(e) => (e.currentTarget.style.backgroundColor = "#64c261")} // ✅ Fixed
           >
             Submit Request
           </button>
@@ -95,7 +86,6 @@ const aboutContainerStyle = {
   boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.3)",
   color: "#d3d3d3",
   textAlign: "center",
-  transition: "transform 0.3s ease, box-shadow 0.3s ease",
 };
 
 const headerStyle = {
@@ -118,7 +108,6 @@ const formContainerStyle = {
   background: "#2f2f2f",
   borderRadius: "10px",
   boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.3)",
-  transition: "transform 0.3s ease, box-shadow 0.3s ease",
 };
 
 const formHeaderStyle = {
@@ -149,10 +138,6 @@ const inputStyle = {
   fontSize: "16px",
   outline: "none",
   transition: "border 0.3s ease",
-};
-
-inputStyle[":focus"] = {
-  border: "1px solid #81e071",
 };
 
 // ✅ Button Styles
