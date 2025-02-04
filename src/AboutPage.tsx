@@ -23,14 +23,19 @@ const AboutPage = () => {
       <p style={paragraphStyle}>
         Meet AMOS—the Adaptable Modular Organization System, where storage meets
         intelligence. Our customizable, modular storage solutions eliminate
-        clutter, maximize space, and evolve with your needs.
+        clutter, maximize space, and evolve with your needs. With AMOS, you
+        don’t just organize—you optimize. You don’t just store—you innovate. And
+        most importantly, you’re shaping a smarter, more sustainable future.
+        Navigate to the visualizer to visualize your custom Model Today! Or
+        check out the catalogue to see some of our curated pre-designed models!
+        Fill out the quote form to request a consultation once you're done!
       </p>
 
       {/* Quote Request Form */}
       <div style={formContainerStyle}>
         <h2 style={formHeaderStyle}>Request a Quote</h2>
         <p style={formDescriptionStyle}>
-          Interested in a custom AMOS solution? Try out the visualizer and fill out the form below and
+          Interested in a custom AMOS solution? Fill out the form below and
           we'll get back to you with a personalized quote.
         </p>
 
@@ -59,14 +64,14 @@ const AboutPage = () => {
             value={formData.details}
             onChange={handleChange}
             required
-            rows={4}  // ✅ Corrected
+            rows={4} // ✅ Corrected (rows should be a number)
             style={{ ...inputStyle, resize: "none" }}
           ></textarea>
           <button
             type="submit"
             style={buttonStyle}
-            onMouseOver={(e) => (e.currentTarget.style.backgroundColor = "#4e7f4c")} // ✅ Fixed
-            onMouseOut={(e) => (e.currentTarget.style.backgroundColor = "#64c261")} // ✅ Fixed
+            onMouseOver={(e) => (e.currentTarget.style.backgroundColor = "#4e7f4c")} // ✅ Corrected TypeScript syntax
+            onMouseOut={(e) => (e.currentTarget.style.backgroundColor = "#64c261")} // ✅ Corrected TypeScript syntax
           >
             Submit Request
           </button>
@@ -76,8 +81,8 @@ const AboutPage = () => {
   );
 };
 
-// 🔥 Styles for About Page
-const aboutContainerStyle = {
+// 🔥 Styles for About Page (Properly Typed)
+const aboutContainerStyle: React.CSSProperties = {
   margin: "20px auto",
   padding: "30px",
   maxWidth: "800px",
@@ -88,13 +93,13 @@ const aboutContainerStyle = {
   textAlign: "center",
 };
 
-const headerStyle = {
+const headerStyle: React.CSSProperties = {
   fontSize: "2rem",
   marginBottom: "20px",
   color: "#64c261",
 };
 
-const paragraphStyle = {
+const paragraphStyle: React.CSSProperties = {
   fontSize: "1.1rem",
   lineHeight: "1.8",
   textAlign: "justify",
@@ -102,7 +107,7 @@ const paragraphStyle = {
 };
 
 // 📋 Form Styles
-const formContainerStyle = {
+const formContainerStyle: React.CSSProperties = {
   marginTop: "30px",
   padding: "25px",
   background: "#2f2f2f",
@@ -110,25 +115,25 @@ const formContainerStyle = {
   boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.3)",
 };
 
-const formHeaderStyle = {
+const formHeaderStyle: React.CSSProperties = {
   color: "#64c261",
   fontSize: "1.8rem",
   marginBottom: "10px",
 };
 
-const formDescriptionStyle = {
+const formDescriptionStyle: React.CSSProperties = {
   fontSize: "1rem",
   color: "#d3d3d3",
   marginBottom: "15px",
 };
 
-const formStyle = {
+const formStyle: React.CSSProperties = {
   display: "grid",
   gap: "15px",
 };
 
 // 🖋 Input Fields
-const inputStyle = {
+const inputStyle: React.CSSProperties = {
   width: "100%",
   padding: "12px",
   border: "1px solid #64c261",
@@ -141,7 +146,7 @@ const inputStyle = {
 };
 
 // ✅ Button Styles
-const buttonStyle = {
+const buttonStyle: React.CSSProperties = {
   padding: "12px",
   backgroundColor: "#64c261",
   color: "white",
