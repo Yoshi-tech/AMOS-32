@@ -70,8 +70,9 @@ const AboutPage = () => {
           <button
             type="submit"
             style={buttonStyle}
-            onMouseOver={(e) => ((e.target as HTMLElement).style.backgroundColor = "#4e7f4c")}
-            onMouseOut={(e) => ((e.target as HTMLElement).style.backgroundColor = "#64c261")}
+              onMouseOver={(e) => (e.target.style.backgroundColor = "#4e7f4c")}
+              onMouseOut={(e) => (e.target.style.backgroundColor = "#64c261")}
+
 
           >
             Submit Request
