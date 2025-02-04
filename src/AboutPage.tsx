@@ -7,9 +7,10 @@ const AboutPage = () => {
     details: "",
   });
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
+const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  setFormData({ ...formData, [e.target.name]: e.target.value });
+};
+
 
   const handleSubmit = (e) => {
     e.preventDefault();
