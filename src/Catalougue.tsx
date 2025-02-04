@@ -1,32 +1,31 @@
 import React from "react";
-import MiniVisualizer from "./MiniVisualizer"; // ✅ Import Mini Visualizer
+import MiniVisualizer from "./MiniVisualizer"; // ✅ Import MiniVisualizer
 import "./Catalogue.css";
 
 interface CatalogueProps {
   setActivePage: React.Dispatch<React.SetStateAction<string>>;
-  setSelectedModel: React.Dispatch<React.SetStateAction<number | null>>;
+  setSelectedModel: React.Dispatch<React.SetStateAction<string | null>>; // ✅ Fixed type from number to string
 }
 
 const Catalogue: React.FC<CatalogueProps> = ({ setActivePage, setSelectedModel }) => {
-
   const items = [
     {
       id: 1,
       title: "Video Game Case",
       description: "A sleek case for organizing your game collection.",
-      model: "/models/nintendo_game_box.stl", // ✅ Explicit Model Path
+      model: "/models/nintendo_game_box.stl",
     },
     {
       id: 2,
       title: "Office Supplies",
       description: "Keep your desk clutter-free with this organizer.",
-      model: "/models/office_supplies_box.stl", // ✅ Explicit Model Path
+      model: "/models/office_supplies_box.stl",
     },
     {
       id: 3,
       title: "Bookshelf",
       description: "A modern bookshelf with modular design.",
-      model: "/models/bookshelf_box.stl", // ✅ Explicit Model Path
+      model: "/models/bookshelf_box.stl",
     },
   ];
 
@@ -40,11 +39,11 @@ const Catalogue: React.FC<CatalogueProps> = ({ setActivePage, setSelectedModel }
             className="catalogue-item"
             key={item.id}
             onClick={() => {
-              setSelectedModel(item.model); // ✅ Pass the explicit model path
-              setActivePage("visualizer"); // ✅ Navigate to the Visualizer
+              setSelectedModel(item.model); // ✅ Now correctly typed as string
+              setActivePage("visualizer");
             }}
           >
-            {/* ✅ Mini Visualizer for each model */}
+            {/* ✅ MiniVisualizer for each model */}
             <MiniVisualizer modelPath={item.model} />
             <div className="catalogue-info">
               <h2>{item.title}</h2>
