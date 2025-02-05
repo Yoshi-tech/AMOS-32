@@ -181,7 +181,7 @@ const DraggableModel: React.FC<DraggableModelProps> = ({ model, onClick }) => {
   );
 };
 // 🎨 UI Styles
-const sidebarStyle = {
+const sidebarStyle: React.CSSProperties =  {
   width: "300px",
   height: "100vh",
   overflowY: "auto",
@@ -190,7 +190,7 @@ const sidebarStyle = {
   color: "#d3d3d3", // ✅ Light gray text for readability
 };
 
-const modelControlStyle = {
+const modelControlStyle: React.CSSProperties =  {
   marginBottom: "15px",
   padding: "10px",
   border: "1px solid #64c261", // ✅ Green accent border
@@ -199,7 +199,7 @@ const modelControlStyle = {
   color: "#d3d3d3", // ✅ Light gray text for readability
 };
 
-const buttonStyle = {
+const buttonStyle: React.CSSProperties =  {
   backgroundColor: "#64c261", // ✅ Green buttons
   padding: "10px 15px",
   color: "white", // ✅ White text for contrast
@@ -217,7 +217,7 @@ buttonStyle[":hover"] = {
   backgroundColor: "#4e7f4c", // ✅ Darker green on hover
 };
 
-const deleteButtonStyle = {
+const deleteButtonStyle: React.CSSProperties =  {
   backgroundColor: "#e74c3c", // ✅ Red for delete actions
   padding: "5px 10px",
   color: "white",
@@ -233,7 +233,7 @@ deleteButtonStyle[":hover"] = {
   backgroundColor: "#c0392b", // ✅ Darker red on hover
 };
 
-const inputStyle = {
+const inputStyle: React.CSSProperties = {
   width: "100%",
   padding: "8px",
   margin: "5px 0",
@@ -244,7 +244,7 @@ const inputStyle = {
   fontSize: "16px",
 };
 
-const selectStyle = {
+const selectStyle: React.CSSProperties = {
   width: "100%",
   padding: "8px",
   margin: "5px 0",
@@ -255,7 +255,7 @@ const selectStyle = {
   fontSize: "16px",
 };
 
-const popupStyle = {
+const popupStyle: React.CSSProperties =  {
   position: "absolute",
   top: "20px",
   left: "50%",
