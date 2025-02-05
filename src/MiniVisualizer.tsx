@@ -2,6 +2,7 @@ import React, { useState, useEffect, Suspense } from "react";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
 import { STLLoader } from "three/examples/jsm/loaders/STLLoader";
+import { BufferGeometry } from "three"; // ✅ Explicitly import BufferGeometry
 import "./MiniVisualizer.css";
 
 // ✅ Define prop types for ModelPreview
@@ -10,7 +11,7 @@ interface ModelPreviewProps {
 }
 
 const ModelPreview: React.FC<ModelPreviewProps> = ({ modelPath }) => {
-  const [geometry, setGeometry] = useState<THREE.BufferGeometry | null>(null);
+  const [geometry, setGeometry] = useState<BufferGeometry | null>(null);
 
   useEffect(() => {
     if (!modelPath) return;
