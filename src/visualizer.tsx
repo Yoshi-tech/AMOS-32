@@ -149,11 +149,13 @@ const Models: React.FC<ModelsProps> = ({ models, setModels, setShowPopup }) => {
     setTimeout(() => setShowPopup(false), 3000);
   };
 
-  return models.map((model) => (
-    <DraggableModel key={model.id} model={model} onClick={() => handleModelClick(model.id)} />
-  ));
-};
-
+   return (
+    <>
+      {models.map((model) => (
+        <DraggableModel key={model.id} model={model} onClick={() => handleModelClick(model.id)} />
+      ))}
+    </>
+  );
 // ✅ Draggable Model (Loads STL Models)
 interface DraggableModelProps {
   model: Model;
