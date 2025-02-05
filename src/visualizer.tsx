@@ -12,14 +12,26 @@ import * as THREE from "three";
 
 const DEFAULT_MODEL_PATH = "/models/base_model.stl";
 
+// ✅ Define model type
+interface Model {
+  id: number;
+  position: [number, number, number];
+  scale: [number, number, number];
+  selected: boolean;
+  rotation: [number, number, number];
+  modelPath: string;
+}
+
+// ✅ Define props for Visualizer
 interface VisualizerProps {
   selectedModel: string | null;
 }
 
 const Visualizer: React.FC<VisualizerProps> = ({ selectedModel }) => {
-  const [models, setModels] = useState([]);
-  const [unit, setUnit] = useState("m");
-  const [showPopup, setShowPopup] = useState(false);
+  // ✅ Use correct type for models state
+  const [models, setModels] = useState<Model[]>([]);
+  const [unit, setUnit] = useState<"m" | "cm" | "in">("m");
+  const [showPopup, setShowPopup] = useState<boolean>(false);
 
   const handleAddModel = () => {
     setModels((prev) => [
@@ -35,18 +47,18 @@ const Visualizer: React.FC<VisualizerProps> = ({ selectedModel }) => {
     ]);
   };
 
-  const handleDeleteModel = (id) => {
+  const handleDeleteModel = (id: number) => {
     setModels((prev) => prev.filter((model) => model.id !== id));
   };
 
-  const convertScale = (value, targetUnit) => {
-    const meterValue = parseFloat(value);
+  const convertScale = (value: number | string, targetUnit: string): string => {
+    const meterValue = parseFloat(value as string);
     if (targetUnit === "cm") return (meterValue * 100).toFixed(2);
     if (targetUnit === "in") return (meterValue * 39.37).toFixed(2);
     return meterValue.toFixed(2);
   };
 
-  const handleScaleChange = (id, axis, value) => {
+  const handleScaleChange = (id: number, axis: number, value: string) => {
     let convertedValue = parseFloat(value);
     if (unit === "cm") convertedValue /= 100;
     if (unit === "in") convertedValue /= 39.37;
@@ -58,7 +70,7 @@ const Visualizer: React.FC<VisualizerProps> = ({ selectedModel }) => {
               ...model,
               scale: model.scale.map((s, i) =>
                 i === axis ? Math.max(0.01, convertedValue) : s
-              ),
+              ) as [number, number, number],
             }
           : model
       )
@@ -66,70 +78,36 @@ const Visualizer: React.FC<VisualizerProps> = ({ selectedModel }) => {
   };
 
   return (
-    <div
-      id="visualizer-container"
-      style={{ display: "flex", position: "relative" }}
-      tabIndex={0}
-    >
+    <div id="visualizer-container" style={{ display: "flex", position: "relative" }} tabIndex={0}>
       {/* Sidebar Controls */}
       <div style={sidebarStyle}>
         <h1>Model Controls</h1>
-        <label style={{ display: "block", marginBottom: "10px" }}>
+        <label>
           Unit:
-          <select
-            value={unit}
-            onChange={(e) => setUnit(e.target.value)}
-            style={selectStyle}
-          >
+          <select value={unit} onChange={(e) => setUnit(e.target.value as "m" | "cm" | "in")} style={selectStyle}>
             <option value="m">Meters (m)</option>
             <option value="cm">Centimeters (cm)</option>
             <option value="in">Inches (in)</option>
           </select>
         </label>
-        <button onClick={handleAddModel} style={buttonStyle}>
-          Add Model
-        </button>
+        <button onClick={handleAddModel} style={buttonStyle}>Add Model</button>
 
         {models.map((model) => (
           <div key={model.id} style={modelControlStyle}>
             <h3>Model {model.id}</h3>
-            <button
-              onClick={() => handleDeleteModel(model.id)}
-              style={deleteButtonStyle}
-            >
-              Remove
-            </button>
-
-            <label>
-              X Scale ({unit}):
-              <input
-                type="number"
-                step="0.1"
-                value={convertScale(model.scale[0], unit)}
-                onChange={(e) => handleScaleChange(model.id, 0, e.target.value)}
-                style={inputStyle}
-              />
-            </label>
-            <label>
-              Y Scale ({unit}):
-              <input
-                type="number"
-                step="0.1"
-                value={convertScale(model.scale[1], unit)}
-                onChange={(e) => handleScaleChange(model.id, 1, e.target.value)}
-                style={inputStyle}
-              />
-            </label>
-            <label>
-              Z Scale ({unit}):
-              <input
-                type="number"
-                step="0.1"
-                value={convertScale(model.scale[2], unit)}
-                onChange={(e) => handleScaleChange(model.id, 2, e.target.value)}
-                style={inputStyle}
-              />
-            </label>
+            <button onClick={() => handleDeleteModel(model.id)} style={deleteButtonStyle}>Remove</button>
+            {["X", "Y", "Z"].map((axis, i) => (
+              <label key={axis}>
+                {axis} Scale ({unit}):
+                <input
+                  type="number"
+                  step="0.1"
+                  value={convertScale(model.scale[i], unit)}
+                  onChange={(e) => handleScaleChange(model.id, i, e.target.value)}
+                  style={inputStyle}
+                />
+              </label>
+            ))}
           </div>
         ))}
       </div>
@@ -143,15 +121,7 @@ const Visualizer: React.FC<VisualizerProps> = ({ selectedModel }) => {
           <Suspense fallback={null}>
             <ambientLight intensity={0.5} />
             <directionalLight position={[10, 10, 10]} castShadow />
-            <mesh rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
-              <planeGeometry args={[100, 100]} />
-              <meshStandardMaterial color="#e0e0e0" />
-            </mesh>
-            <Models
-              models={models}
-              setModels={setModels}
-              setShowPopup={setShowPopup}
-            />
+            <Models models={models} setModels={setModels} setShowPopup={setShowPopup} />
             <OrbitControls enablePan={true} enableRotate={true} />
           </Suspense>
         </Canvas>
@@ -161,107 +131,55 @@ const Visualizer: React.FC<VisualizerProps> = ({ selectedModel }) => {
 };
 
 // ✅ Models Component (Handles Movement & Selection)
-const Models = ({ models, setModels, setShowPopup }) => {
-  const { gl } = useThree();
-  const selectedModel = models.find((model) => model.selected);
+interface ModelsProps {
+  models: Model[];
+  setModels: React.Dispatch<React.SetStateAction<Model[]>>;
+  setShowPopup: React.Dispatch<React.SetStateAction<boolean>>;
+}
 
-  const handleKeyDown = useCallback(
-    (event) => {
-      if (!selectedModel) return;
-
-      const movementSpeed = event.shiftKey ? 0.5 : 0.2;
-      const [x, y, z] = selectedModel.position;
-
-      const newPosition = {
-        ArrowUp: [x, Math.max(y, 0), z - movementSpeed], // ✅ Prevent sinking
-        ArrowDown: [x, Math.max(y, 0), z + movementSpeed],
-        ArrowLeft: [x - movementSpeed, Math.max(y, 0), z],
-        ArrowRight: [x + movementSpeed, Math.max(y, 0), z],
-      }[event.key];
-
-      if (newPosition) {
-        setModels((prev) =>
-          prev.map((model) =>
-            model.id === selectedModel.id
-              ? { ...model, position: newPosition }
-              : model
-          )
-        );
-      }
-    },
-    [selectedModel, setModels]
-  );
-
-  useEffect(() => {
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [handleKeyDown]);
-
-  const handleModelClick = (id) => {
+const Models: React.FC<ModelsProps> = ({ models, setModels, setShowPopup }) => {
+  const handleModelClick = (id: number) => {
     setModels((prev) =>
-      prev.map((model) =>
-        model.id === id
-          ? { ...model, selected: true }
-          : { ...model, selected: false }
-      )
+      prev.map((model) => ({
+        ...model,
+        selected: model.id === id,
+      }))
     );
     setShowPopup(true);
     setTimeout(() => setShowPopup(false), 3000);
   };
 
   return models.map((model) => (
-    <DraggableModel
-      key={model.id}
-      model={model}
-      onClick={() => handleModelClick(model.id)}
-    />
+    <DraggableModel key={model.id} model={model} onClick={() => handleModelClick(model.id)} />
   ));
 };
 
 // ✅ Draggable Model (Loads STL Models)
-const DraggableModel = ({ model, onClick }) => {
-  const meshRef = useRef();
-  const [geometry, setGeometry] = useState(null);
+interface DraggableModelProps {
+  model: Model;
+  onClick: () => void;
+}
+
+const DraggableModel: React.FC<DraggableModelProps> = ({ model, onClick }) => {
+  const meshRef = useRef<THREE.Mesh>(null);
+  const [geometry, setGeometry] = useState<THREE.BufferGeometry | null>(null);
 
   useEffect(() => {
     const loader = new STLLoader();
     loader.load(model.modelPath, (loadedGeometry) => {
-      loadedGeometry.center(); // ✅ Center the model
-
-      const boundingBox = new THREE.Box3().setFromBufferAttribute(
-        loadedGeometry.attributes.position
-      );
-      const size = new THREE.Vector3();
-      boundingBox.getSize(size);
-
-      const maxDimension = Math.max(size.x, size.y, size.z);
-      const normalizedScale = 2 / maxDimension;
-      model.scale = [normalizedScale, normalizedScale, normalizedScale];
-
-      // ✅ Adjust Y position to sit on ground
-      const yOffset = boundingBox.min.y * normalizedScale;
-      model.position[1] = -yOffset;
-
+      loadedGeometry.center();
       setGeometry(loadedGeometry);
     });
   }, [model.modelPath]);
 
   return (
-    <mesh
-      ref={meshRef}
-      position={model.position}
-      scale={model.scale}
-      castShadow
-      onClick={onClick}
-      //rotation={[-Math.PI / 2, 0, 0]}
-    >
+    <mesh ref={meshRef} position={model.position} scale={model.scale} castShadow onClick={onClick}>
       {geometry && <bufferGeometry attach="geometry" {...geometry} />}
       <meshStandardMaterial color={model.selected ? "orange" : "lightblue"} />
       {model.selected && <Edges scale={1.05} threshold={15} color="yellow" />}
     </mesh>
   );
 };
-
 // 🎨 UI Styles
 const sidebarStyle = {
   width: "300px",
