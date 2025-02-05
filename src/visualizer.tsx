@@ -12,7 +12,11 @@ import * as THREE from "three";
 
 const DEFAULT_MODEL_PATH = "/models/base_model.stl";
 
-const Visualizer = ({ selectedModel }) => {
+interface VisualizerProps {
+  selectedModel: string | null;
+}
+
+const Visualizer: React.FC<VisualizerProps> = ({ selectedModel }) => {
   const [models, setModels] = useState([]);
   const [unit, setUnit] = useState("m");
   const [showPopup, setShowPopup] = useState(false);
