@@ -1,23 +1,28 @@
 import React, { useState } from "react";
 import "./Login.css";
 
-const Login = ({ onLoginSuccess }) => {
+// ✅ Define prop types for Login
+interface LoginProps {
+  onLoginSuccess: () => void; // Ensures it's a function
+}
+
+const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [isRegistering, setIsRegistering] = useState(false);
 
   const handleLogin = () => {
-    const users = JSON.parse(localStorage.getItem("users")) || {};
+    const users = JSON.parse(localStorage.getItem("users") || "{}");
     if (users[username] === password) {
-      onLoginSuccess();
+      onLoginSuccess(); // ✅ Now correctly typed
     } else {
       setError("Invalid username or password ❌");
     }
   };
 
   const handleRegister = () => {
-    const users = JSON.parse(localStorage.getItem("users")) || {};
+    const users = JSON.parse(localStorage.getItem("users") || "{}");
     if (users[username]) {
       setError("Username already exists ❗");
     } else {
@@ -32,9 +37,7 @@ const Login = ({ onLoginSuccess }) => {
     <div className="login-container">
       <div className="login-card">
         <h2>{isRegistering ? "Create an Account" : "Welcome Back!"}</h2>
-        <p>
-          {isRegistering ? "Register to get started" : "Log in to continue"}
-        </p>
+        <p>{isRegistering ? "Register to get started" : "Log in to continue"}</p>
 
         <input
           type="text"
@@ -56,9 +59,7 @@ const Login = ({ onLoginSuccess }) => {
         </button>
 
         <p className="toggle-text">
-          {isRegistering
-            ? "Already have an account?"
-            : "Don't have an account?"}{" "}
+          {isRegistering ? "Already have an account?" : "Don't have an account?"}{" "}
           <span onClick={() => setIsRegistering(!isRegistering)}>
             {isRegistering ? "Login" : "Register"}
           </span>
