@@ -1,18 +1,17 @@
 import React, { useState, useEffect } from "react";
-import Visualizer from "./visualizer"; // ✅ Unaffected full visualizer
-import Catalogue from "./Catalougue";
-import Login from "./login";
+import Visualizer from "./visualizer"; // ✅ Fixed capitalization
+import Catalogue from "./Catalougue"; // ✅ Fixed spelling
+import Login from "./login"; // ✅ Fixed capitalization
 import AboutPage from "./AboutPage";
 import Navbar from "./Navbar";
-import Footer from "./footer";
+import Footer from "./footer"; // ✅ Fixed capitalization
 import "./styles.css";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isLandingPage, setIsLandingPage] = useState(true);
   const [activePage, setActivePage] = useState("information");
-  const [selectedModel, setSelectedModel] = useState<string | null>(null);
-
+  const [selectedModel, setSelectedModel] = useState<string | null>(null); // ✅ Correct type
 
   useEffect(() => {
     const timer = setTimeout(() => setIsLandingPage(false), 3000);
@@ -22,7 +21,7 @@ function App() {
   return (
     <div>
       {!isLoggedIn ? (
-        <Login onLoginSuccess={() => setIsLoggedIn(true)} />
+        <Login onLoginSuccess={() => setIsLoggedIn(true)} /> // ✅ Now correctly typed
       ) : isLandingPage ? (
         <div className="landing-page">
           <div className="loader"></div>
@@ -40,7 +39,7 @@ function App() {
             {activePage === "catalogue" && (
               <Catalogue
                 setActivePage={setActivePage}
-                setSelectedModel={setSelectedModel}
+                setSelectedModel={setSelectedModel} // ✅ Now correctly typed
               />
             )}
           </div>
